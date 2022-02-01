@@ -9,15 +9,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import model.entities.Department;
 
 
 public class DepartmentFormController implements Initializable {
 	
-	@FXML
-	private TextField txtid;
+	private Department entity;
 	
 	@FXML
-	private TextField txtname;
+	private TextField txtId;
+	
+	@FXML
+	private TextField txtName;
 	
 	@FXML
 	private Label labelErroName;
@@ -27,6 +30,10 @@ public class DepartmentFormController implements Initializable {
 	
 	@FXML
 	private Button btCancel;
+	
+	public void setDepartment(Department entity) {
+		this.entity = entity;
+	}
 	
 	@FXML
 	public void onBtSaveAction() {
@@ -46,8 +53,20 @@ public class DepartmentFormController implements Initializable {
 	}
 
 	private void initializeNodes() {
-		Constraints.setTextFieldInteger(txtid); // metodo para aceitar apenas numeros inteiros
-		Constraints.setTextFieldMaxLength(txtname, 30); //metodo para colocar limite de caractere
+		Constraints.setTextFieldInteger(txtId); // metodo para aceitar apenas numeros inteiros
+		Constraints.setTextFieldMaxLength(txtName, 30); //metodo para colocar limite de caractere
 		
 	}
+	
+	public void updateFormData() {  //responsavel por pegar os dados do entity e popular as caixas do texto do formulário
+		if(entity == null) {
+			throw new IllegalStateException("Entity was null");
+		}
+		
+		txtId.setText(String.valueOf(entity.getId()));
+		txtName.setText(entity.getName());
+		
+		
+	}
+	
 }
