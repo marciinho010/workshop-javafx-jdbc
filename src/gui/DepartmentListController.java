@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -26,7 +27,7 @@ import javafx.stage.Stage;
 import model.entities.Department;
 import model.services.DepartmentService;
 
-public class DepartmentListController implements Initializable {
+public class DepartmentListController implements Initializable, DataChangeListener {
 	
 	private DepartmentService service;
 	
@@ -96,6 +97,7 @@ public class DepartmentListController implements Initializable {
 			DepartmentFormController controller = loader.getController(); // criando referencia para o controlador
 			controller.setDepartment(obj); //injetar no controlador o departamento
 			controller.setDepartmentService(new DepartmentService()); //injetando o serviço
+			controller.subcribeDataChangeListener(this);
 			controller.updateFormData(); // carregar os dados do obj no formulario
 			
 			
@@ -114,5 +116,11 @@ public class DepartmentListController implements Initializable {
 		}
 		
 		//quando cria janela de dialogo, tem que informar para ela quem quw é o stage que criou a janela de dialogo
+	}
+
+	@Override
+	public void onDataChanged() {
+		updateTableView();
+		
 	}
 }
