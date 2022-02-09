@@ -1,8 +1,11 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -17,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entities.Seller;
@@ -39,7 +43,25 @@ public class SellerFormController implements Initializable {
 	private TextField txtName;
 	
 	@FXML
+	private TextField txtEmail;
+	
+	@FXML
+	private DatePicker dpBirthDate;
+	
+	@FXML
+	private TextField txtBaseSalary;
+	
+	@FXML
 	private Label labelErroName;
+	
+	@FXML
+	private Label labelErroEmail;
+	
+	@FXML
+	private Label labelErroBirthDate;
+	
+	@FXML
+	private Label labelErroBaseSalary;
 	
 	@FXML
 	private Button btSave;
@@ -120,7 +142,12 @@ public class SellerFormController implements Initializable {
 
 	private void initializeNodes() {
 		Constraints.setTextFieldInteger(txtId); // metodo para aceitar apenas numeros inteiros
-		Constraints.setTextFieldMaxLength(txtName, 30); //metodo para colocar limite de caractere
+		Constraints.setTextFieldMaxLength(txtName, 70); //metodo para colocar limite de caractere
+		Constraints.setTextFieldDouble(txtBaseSalary);
+		Constraints.setTextFieldMaxLength(txtEmail, 60);
+		Utils.formatDatePicker(dpBirthDate, "dd/MM/yyyy");
+		
+		
 		
 	}
 	
@@ -131,8 +158,12 @@ public class SellerFormController implements Initializable {
 		
 		txtId.setText(String.valueOf(entity.getId()));
 		txtName.setText(entity.getName());
-		
-		
+		txtEmail.setText(entity.getEmail());
+		Locale.setDefault(Locale.US);
+		txtBaseSalary.setText(String.format("%.2f", entity.getBaseSalary()));
+		if(entity.getBirthDate() != null) { // so vai converter se não for nulo
+			dpBirthDate.setValue(LocalDate.ofInstant(entity.getBirthDate().toInstant(), ZoneId.systemDefault()) ); // criando data local baseado no date da entidade, pegando o instant e pegando a zone(fuso horario) da maquina local do usuario
+		}
 	}
 	
 	private void setErrorMessages(Map<String, String> errors) {
