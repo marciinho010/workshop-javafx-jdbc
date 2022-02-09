@@ -132,6 +132,7 @@ public class DepartmentListController implements Initializable, DataChangeListen
 			// tem que instanciar um novo stage ou seja um palco na frente de outro palco
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Erro loading view", e.getMessage(), Alert.AlertType.ERROR);
 		}
 

@@ -32,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.Seller;
+import model.services.DepartmentService;
 import model.services.SellerService;
 
 public class SellerListController implements Initializable, DataChangeListener {
@@ -129,7 +130,8 @@ public class SellerListController implements Initializable, DataChangeListener {
 
 			SellerFormController controller = loader.getController(); // criando referencia para o controlador
 			controller.setSeller(obj); // injetar no controlador o departamento
-			controller.setSellerService(new SellerService()); // injetando o serviço
+			controller.setService(new SellerService(), new DepartmentService()); // injetando o serviço
+			controller.loadAssociatedObject();
 			controller.subcribeDataChangeListener(this);
 			controller.updateFormData(); // carregar os dados do obj no formulario
 
@@ -147,6 +149,7 @@ public class SellerListController implements Initializable, DataChangeListener {
 			// tem que instanciar um novo stage ou seja um palco na frente de outro palco
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			Alerts.showAlert("IO Exception", "Erro loading view", e.getMessage(), Alert.AlertType.ERROR);
 		}
 
